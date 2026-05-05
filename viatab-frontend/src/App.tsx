@@ -18,8 +18,12 @@ function App() {
   const [editContent, setEditContent] = useState("");
 
   const fetchStories = async () => {
-    const res = await api.get("/stories");
-    setStories(res.data);
+    try {
+      const res = await api.get("/stories");
+      setStories(res.data);
+    } catch {
+      // leave list empty if API is unavailable
+    }
   };
 
   useEffect(() => {
