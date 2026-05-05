@@ -1,0 +1,14 @@
+# .NET
+ViatabBackend/bin/
+ViatabBackend/obj/
+ViatabBackend.Tests/bin/
+ViatabBackend.Tests/obj/
+
+# React
+viatab-frontend/node_modules/
+viatab-frontend/build/
+viatab-frontend/.env.local
+
+# OS
+.DS_Store
+Thumbs.db

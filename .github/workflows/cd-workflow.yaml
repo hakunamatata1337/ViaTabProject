@@ -1,0 +1,40 @@
+name: CD
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  deploy:
+    name: Deploy to Minikube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start Minikube
+        uses: medyagh/setup-minikube@master
+
+      - name: Build backend image in Minikube Docker context
+        run: |
+          eval $(minikube docker-env)
+          docker build -t viatab-backend ./ViatabBackend
+
+      - name: Build frontend image in Minikube Docker context
+        run: |
+          eval $(minikube docker-env)
+          docker build -t viatab-frontend ./viatab-frontend
+
+      - name: Apply Kubernetes resources
+        run: kubectl apply -f k8s/
+
+      - name: Wait for backend rollout
+        run: kubectl rollout status deployment/viatab-backend --timeout=120s
+
+      - name: Wait for frontend rollout
+        run: kubectl rollout status deployment/viatab-frontend --timeout=120s
+
+      - name: Show running pods and services
+        run: |
+          kubectl get pods
+          kubectl get services
+          minikube service frontend --url
