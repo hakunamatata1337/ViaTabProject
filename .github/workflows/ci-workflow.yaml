@@ -18,11 +18,8 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore ViatabBackend.Tests/
-
       - name: Run backend tests
-        run: dotnet test ViatabBackend.Tests/ --no-restore --verbosity normal
+        run: dotnet test ViatabBackend.Tests/ --verbosity normal
 
   test-frontend:
     name: Build & Test Frontend
